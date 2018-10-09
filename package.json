@@ -4,6 +4,7 @@
   "description": "新刊「徹底図解 RxJS」で紹介しているサンプルプログラムのソースコード群",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --mode=development",
     "start": "webpack-dev-server --mode=development",
     "release": "webpack --mode=production"
   },
