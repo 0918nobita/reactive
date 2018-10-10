@@ -14,11 +14,12 @@ import { Subscriber } from 'rxjs';
 
 /*
   Subscriber (extends Subscription)
-  Implements the Observer interface and extends the Subscription class.
-  While the Observer is the public API for consuming the values of an Observable,
-  all Observers get converted to a Subscriber, in order to provide Subscription-lile
-  capabilities such as unsubscribe. Subscriber is a common type in RxJS, and crucial
-  for implementing operators, but it is rarely used as a public API.
+  Observer インターフェースを実装し、Subject クラスを継承しています。
+  Observer が Observable の値を消費するための public API であるのに対し、
+  例えば unsubscribe メソッドのように、Subscription のような機能を提供するために、
+  すべての Observer が Subscriber に変換されます。
+  Subscriber は RxJS において汎用的な型であり、オペレータの実装において重要な役割を担っていますが、
+  public API として利用されることは稀です。
  */
 
 const subscriber = new Subscriber<number>(
