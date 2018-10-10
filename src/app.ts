@@ -2,14 +2,14 @@ import { Subscriber } from 'rxjs';
 
 /*
   Subscription
-  Represents a disposable resource, such as the execution of an Observable.
-  A Subscription has one important method, unsubscribe, that takes no argument
-  and just disposes the resource held by the subscription.
+  例えば Observable の実行のような、使い捨てのリソースを表します。
+  Subscription は unsubscribe というひとつの重要なメソッドを持ち、
+  それは引数を取らず、subscription が保有するリソースを捨てるだけです。
 
-  Additionally, subscriotions may be grouped together through the add() method,
-  which will attach a child Subscription to the current Subscription.
-  When a Subscription is unsubscribed, all its children (and its grandchildren)
-  will be unsubscribed as well.
+  加えて、Subscription は、子の Subscription を
+  追加することができる add() メソッドを通じて、グループにまとめられます。
+  Subscription が unsubscribe された時には、
+  すべての子 (とさらにその子) が同じように unsubscribe されます。
  */
 
 /*
