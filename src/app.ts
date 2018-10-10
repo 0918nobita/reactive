@@ -12,6 +12,15 @@ import { Subscriber } from 'rxjs';
   will be unsubscribed as well.
  */
 
+/*
+  Subscriber (extends Subscription)
+  Implements the Observer interface and extends the Subscription class.
+  While the Observer is the public API for consuming the values of an Observable,
+  all Observers get converted to a Subscriber, in order to provide Subscription-lile
+  capabilities such as unsubscribe. Subscriber is a common type in RxJS, and crucial
+  for implementing operators, but it is rarely used as a public API.
+ */
+
 const subscriber = new Subscriber<number>(
     (value) => console.log('Next: ' + value),
     (error) => console.error(error),
