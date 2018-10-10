@@ -69,3 +69,8 @@ subscriber.add(() => {
   A Subject is a special type of Observable that allows values to be multicasted to
   many Observables. Subjects are like EventEmitters.
  */
+
+/*
+  SubjectSubscriber (extends Subscriber)
+  constructor がオーバーライドされているだけで、他の仕様は Subscriber 同様
+ */
