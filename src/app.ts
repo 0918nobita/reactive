@@ -63,3 +63,9 @@ subscriber.add(() => {
   A representation of any set of values over any amount of time.
   This is the most basic building block of RxJS.
  */
+
+/*
+  Subject (extends Observable)
+  A Subject is a special type of Observable that allows values to be multicasted to
+  many Observables. Subjects are like EventEmitters.
+ */
