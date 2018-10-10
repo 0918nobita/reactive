@@ -57,3 +57,9 @@ subscriber.next(3);
 subscriber.add(() => {
   console.log('Teardown Logic');
 });
+
+/*
+  Observable<T>
+  A representation of any set of values over any amount of time.
+  This is the most basic building block of RxJS.
+ */
