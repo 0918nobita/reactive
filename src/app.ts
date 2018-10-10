@@ -7,7 +7,8 @@ const subscriber = new Subscriber<number>(
     () => console.log('Completed.'));
 
 subscriber.next(1);
-// subscriber.error(new Error('いyarn'));
-subscriber.complete();
-subscriber.unsubscribe();
 subscriber.next(2);
+// subscriber.error(new Error('いyarn'));
+// subscriber.complete();
+// subscriber.unsubscribe();
+subscriber.next(3);
