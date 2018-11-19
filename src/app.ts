@@ -80,31 +80,32 @@ class Func<A, B, C> {  // 関数: A -> B -> C
   constructor(
     private arg1: LazyArg<A>,
     private arg2: LazyArg<B>,
-    private innerFunc: (arg1: LazyArg<A>, arg2: LazyArg<B>) => C
+    private innerFunc: (arg1: LazyArg<A>, arg2: LazyArg<B>) => Promise<C>
   ) {}
 
-  call(): C {
-    return this.innerFunc(this.arg1, this.arg2);
+  async call() {
+    return await this.innerFunc(this.arg1, this.arg2);
   }
 }
 
 class LazyArg<T> {  // T: 評価結果の型
   constructor(
-    private expr: () => T
+    private expr: () => Promise<T>
   ) {}
 
   // 正格評価
-  force(): T {
-    return this.expr();
+  async force() {
+    return await this.expr();
   }
 }
 
-const arg1 = new LazyArg<number>(() => 1);
-const arg2 = new LazyArg<number>(() => add(1, 2));
-const func = new Func(arg1, arg2, (arg1, arg2) => {
-  return [arg1.force()];
+const arg1 = new LazyArg<number>(async () => Promise.resolve(add(1, 2)));
+const arg2 = new LazyArg<number>(async () => Promise.resolve(add(3, 4)));
+const func = new Func<number, number, number[]>(arg1, arg2, async (arg1, arg2) => {
+  return [await arg1.force(), await arg2.force()];
 });
-console.log(func.call());
+
+func.call().then(result => console.log(result)).catch(err => console.error(err));
 
 function add(x: number, y: number): number {
   console.log(`Evaluated: ${x} + ${y}`);
