@@ -75,3 +75,38 @@ subscriber.add(() => {
   SubjectSubscriber (extends Subscriber)
   constructor がオーバーライドされているだけで、他の仕様は Subscriber 同様
  */
+
+class Func<A, B, C> {  // 関数: A -> B -> C
+  constructor(
+    private arg1: LazyArg<A>,
+    private arg2: LazyArg<B>,
+    private innerFunc: (arg1: LazyArg<A>, arg2: LazyArg<B>) => C
+  ) {}
+
+  call(): C {
+    return this.innerFunc(this.arg1, this.arg2);
+  }
+}
+
+class LazyArg<T> {  // T: 評価結果の型
+  constructor(
+    private expr: () => T
+  ) {}
+
+  // 正格評価
+  force(): T {
+    return this.expr();
+  }
+}
+
+const arg1 = new LazyArg<number>(() => 1);
+const arg2 = new LazyArg<number>(() => add(1, 2));
+const func = new Func(arg1, arg2, (arg1, arg2) => {
+  return [arg1.force()];
+});
+console.log(func.call());
+
+function add(x: number, y: number): number {
+  console.log(`Evaluated: ${x} + ${y}`);
+  return x + y;
+}
