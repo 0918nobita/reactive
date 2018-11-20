@@ -1,4 +1,24 @@
-import { Subscriber } from 'rxjs';
+import { Subscriber, zip, of, interval, race } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+
+zip(of(2),of(3)).subscribe({
+  next (result) {
+    console.log('zip',
+      result.reduce((x, y) => x + y, 0)
+    );
+  },
+  error (err) { console.error(err); },
+  complete () { console.log('Completed.'); }
+});
+
+race(
+  interval(3000).pipe(take(1)),
+  interval(2000).pipe(take(1), map(() => 2))
+).subscribe({
+  next (result) { console.log(result); },
+  error (err) { console.error(err); },
+  complete () { console.log('Completed.'); }
+});
 
 /*
   Subscription
@@ -22,6 +42,7 @@ import { Subscriber } from 'rxjs';
   public API として利用されることは稀です。
  */
 
+/*
 const subscriber = new Subscriber<number>(
     (value) => console.log('Next: ' + value),
     (error) => console.error(error),
@@ -33,6 +54,7 @@ subscriber.next(2);
 // subscriber.complete();
 // subscriber.unsubscribe();
 subscriber.next(3);
+*/
 
 /*
   TeardownLogic
@@ -55,9 +77,11 @@ subscriber.next(3);
     function does not have to return anything.
  */
 
+/*
 subscriber.add(() => {
   console.log('Teardown Logic');
 });
+*/
 
 /*
   Observable<T>
@@ -76,6 +100,7 @@ subscriber.add(() => {
   constructor がオーバーライドされているだけで、他の仕様は Subscriber 同様
  */
 
+/*
 class Func<A, B, C> {  // 関数: A -> B -> C
   constructor(
     private arg1: LazyArg<A>,
@@ -111,3 +136,4 @@ function add(x: number, y: number): number {
   console.log(`Evaluated: ${x} + ${y}`);
   return x + y;
 }
+*/
