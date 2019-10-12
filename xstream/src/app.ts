@@ -31,13 +31,14 @@ class Stream<T> implements Listener<T> {
   private internalListeners: Array<Listener<T>> = [];
   private debugListener?: Listener<T>;
   private err = NO;
+  /** imitation target if this Stream will imitate */
   private target?: Stream<T>;
-  private stopID?: NodeJS.Timer;
+  private stopID?: number;
 
   constructor(private producer?: Producer<T>) {}
 
   next(value: T): void {
-    if (this.debugListener !== undefined) this.debugListener.next(value);
+    if (this.debugListener !== void 0) this.debugListener.next(value);
     for (const listener of this.internalListeners) listener.next(value);
   }
 
@@ -48,14 +49,14 @@ class Stream<T> implements Listener<T> {
 
   complete(): void {
     this.tearDown();
-    if (this.debugListener !== undefined) this.debugListener.complete();
+    if (this.debugListener !== void 0) this.debugListener.complete();
     for (const listener of this.internalListeners) listener.complete();
   }
 
   /** tear down logic, after error or complete */
   private tearDown(): void {
     if (this.internalListeners.length === 0) return;
-    if (this.producer !== undefined) this.producer.stop();
+    if (this.producer !== void 0) this.producer.stop();
     this.err = NO;
     this.internalListeners = [];
   }
@@ -68,7 +69,7 @@ class Stream<T> implements Listener<T> {
       complete: listener.complete || noop
     };
 
-    if (this.target !== undefined) {
+    if (this.target !== void 0) {
       this.target.addListener(listener);
       return;
     }
@@ -77,7 +78,7 @@ class Stream<T> implements Listener<T> {
 
     if (this.internalListeners.length > 1) return;
 
-    if (this.stopID !== undefined) {
+    if (this.stopID !== void 0) {
       clearTimeout(this.stopID);
       this.stopID = void 0;
       return;
