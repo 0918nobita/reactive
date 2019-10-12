@@ -61,6 +61,16 @@ class Stream<T> implements Listener<T> {
     this.internalListeners = [];
   }
 
+  private stopNow(): void {
+    if (this.producer === void 0)
+      throw new Error(
+        'producer が登録されていない状態での stopNow メソッドの呼び出しは禁止されています'
+      );
+    this.producer.stop();
+    this.err = NO;
+    this.stopID = void 0;
+  }
+
   /** Adds a Listener to the Stream. */
   addListener(listener: Partial<Listener<T>>): void {
     const internalListener: Listener<T> = {
@@ -84,6 +94,23 @@ class Stream<T> implements Listener<T> {
       return;
     }
 
-    if (this.producer !== undefined) this.producer.start(this);
+    if (this.producer !== void 0) this.producer.start(this);
+  }
+
+  removeListener(listener: Listener<T>): void {
+    if (this.target !== void 0) {
+      this.target.removeListener(listener);
+      return;
+    }
+
+    const i = this.internalListeners.indexOf(listener);
+    if (i === -1) return;
+
+    this.internalListeners.splice(i, 1);
+
+    if (this.producer !== void 0 && this.internalListeners.length <= 0) {
+      this.err = NO;
+      this.stopID = setTimeout(() => this.stopNow());
+    }
   }
 }
